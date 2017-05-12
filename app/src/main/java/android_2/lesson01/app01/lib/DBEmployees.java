@@ -6,24 +6,26 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 
-public class DBEmpl extends DBSQLite {
+public class DBEmployees extends DBSQLite {
 	
-	/* Private field for store SQL WHERE for one element (by id) */
+	// Private field for store SQL WHERE for one element (by id)
 	private static final String SQL_WHERE_BY_ID = BaseColumns._ID + "=?";
 	
-	/* Public constant that store a name of data base */
-	public static final String DB_NAME = "DBEmpl.db";
+	// private (-Public) constant that store a name of data base
+	private static final String DB_NAME = "DBEmployees.db";
 	
-	/* Public constant that store a version of data base */
-	public static final int DB_VERSION = 2;	
+	// private (-Public) constant that store a version of data base
+	private static final int DB_VERSION = 2;
 
 	/** 
 	 * Constructor with one parameter that describe a link 
 	 * to the Context object.
 	 * 	@param context	The context object.
 	 * */
-	public DBEmpl(Context context) {
+	public DBEmployees(Context context) {
+		//null - CursorFactory factory
 		super(context, DB_NAME, null, DB_VERSION);
+
 	}		
 	
 	/**
@@ -39,27 +41,27 @@ public class DBEmpl extends DBSQLite {
 		DBSQLite.execSQL(db, TableEmpl.SQL_CREATE);	
 		DBSQLite.execSQL(db, TableDep.SQL_CREATE);
 		
-		/* Fill table tDep */				
+		/* Fill table tDep */
 		
 		// load data from application resources
-		String[] deps = getContext().getResources().getStringArray(
+		String[] departments = getContext().getResources().getStringArray(
 				R.array.dep_items);
 		
 		// create object for store couples of names and values
-		ContentValues values = new ContentValues(deps.length);
+		ContentValues contentValues = new ContentValues(departments.length);
 				
 		// Fill table tDep 
-		for (int i = 0; i < deps.length; i++) {			
+		for (int i = 0; i < departments.length; i++) {
 		
-			// parse information about department 
-			String[] dep = deps[i].split("-");	
+			// parse information about department (tuple = кортеж = строка в таблице)
+			String[] tuple = departments[i].split("-");
 			
 			// fill values
-			values.put(TableDep.C_NAME, dep[0]);
-			values.put(TableDep.C_LOCA, dep[1]);
+			contentValues.put(TableDep.F_DEPARTMENT_NAME, tuple[0]);
+			contentValues.put(TableDep.F_DEPARTMENT_LOCATION, tuple[1]);
 			
 			// add record to a data base
-			db.insert(TableDep.T_NAME, null, values);
+			db.insert(TableDep.TABLE_NAME, null, contentValues);
 			
 		}
 		
@@ -77,8 +79,8 @@ public class DBEmpl extends DBSQLite {
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		
 		/* Drop tables */
-		DBSQLite.dropTable(db, TableEmpl.T_NAME);
-		DBSQLite.dropTable(db, TableDep.T_NAME);
+		DBSQLite.dropTable(db, TableEmpl.TABLE_NAME);
+		DBSQLite.dropTable(db, TableDep.TABLE_NAME);
 		
 		/* Invoke onCreate method */
 		this.onCreate(db);
@@ -97,11 +99,11 @@ public class DBEmpl extends DBSQLite {
 		ContentValues v = new ContentValues();
 		
 		/* Fill values */
-		v.put(TableDep.C_NAME, name);
-		v.put(TableDep.C_LOCA, location);
+		v.put(TableDep.F_DEPARTMENT_NAME, name);
+		v.put(TableDep.F_DEPARTMENT_LOCATION, location);
 		
 		/* Add item to a data base */
-		return this.getWritableDatabase().insert(TableDep.T_NAME, null, v);
+		return this.getWritableDatabase().insert(TableDep.TABLE_NAME, null, v);
 		
 	}
 	
@@ -117,11 +119,11 @@ public class DBEmpl extends DBSQLite {
 		ContentValues v = new ContentValues();
 		
 		/* Fill values */
-		v.put(TableDep.C_NAME, name);
-		v.put(TableDep.C_LOCA, location);
+		v.put(TableDep.F_DEPARTMENT_NAME, name);
+		v.put(TableDep.F_DEPARTMENT_LOCATION, location);
 		
 		/* Update information */
-		return 1 == this.getWritableDatabase().update(TableDep.T_NAME, v, 
+		return 1 == this.getWritableDatabase().update(TableDep.TABLE_NAME, v,
 				SQL_WHERE_BY_ID, new String[] {String.valueOf(id)});			
 	}
 	
@@ -133,7 +135,7 @@ public class DBEmpl extends DBSQLite {
 	 * */
 	public boolean deleteDep(long id) {		
 		return 1 == this.getWritableDatabase().delete(
-				TableDep.T_NAME, SQL_WHERE_BY_ID, 
+				TableDep.TABLE_NAME, SQL_WHERE_BY_ID,
 				new String[] {String.valueOf(id)});			
 	}
 	
@@ -142,60 +144,52 @@ public class DBEmpl extends DBSQLite {
 	 * */	
 	public static class TableEmpl implements BaseColumns {
 		
-		/** Name of this table. */
-		public static final String T_NAME = "tEmpl";
+		// Name of this table.
+		public static final String TABLE_NAME = "tEmpl";
 				
-		/**
-	     * The name of employee.
-	     * <P>Type: TEXT</P>
-	     */
-		public static final String C_NAME = "NAME";
+
+	     // field name - for employee name
+		public static final String F_EMPLOYEES_NAME = "NAME";
 		
-		/**
-	     * Information about employee. 
-	     * <P>Type: TEXT</P>
-	     */
-		public static final String C_INFO = "INFO";
+
+	     // field name - Information about employee.
+		public static final String F_INFO = "INFO";
 		
-		/**
-	     * Department (id) that related with this employee.     
-	     * <P>Type: INTEGER</P>
-	     */
-		public static final String C_DEP_ID  = "DEP_ID";
+
+	     //field name - Department (id) that related with this employee.
+		public static final String F_DEP_ID = "DEP_ID";
 		
-		/** SQL query for a create this table. */
-		public static final String SQL_CREATE = "CREATE TABLE " + T_NAME + 
-				" (" + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + 
-				C_NAME + " TEXT," + 
-				C_INFO + " TEXT," + 
-				C_DEP_ID + " INTEGER)";	
+		// SQL query for a create this table.
+		public static final String SQL_CREATE = "CREATE TABLE " + TABLE_NAME +
+				" (" + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+				F_EMPLOYEES_NAME + " TEXT," +
+				F_INFO + " TEXT," +
+				F_DEP_ID + " INTEGER)";
 	}
-	
+
+
+
 	/**
 	 * Public static class that contains information about table tDep
 	 * */	
 	public static class TableDep implements BaseColumns {
 		
-		/** Name of this table. */
-		public static final String T_NAME = "tDep";
+		// Name of table
+		public static final String TABLE_NAME = "tDep";
 		
-		/**
-	     * The name of department.
-	     * <P>Type: TEXT</P>
-	     */
-		public static final String C_NAME = "NAME";
+
+	    // field name for department name
+		public static final String F_DEPARTMENT_NAME = "NAME";
 		
-		/**
-	     * Department location.
-	     * <P>Type: TEXT</P>
-	     */
-		public static final String C_LOCA = "LOCATION";
+
+	    // field Department location
+		public static final String F_DEPARTMENT_LOCATION = "LOCATION";
 		
-		/** SQL query for a create this table. */
-		public static final String SQL_CREATE = "CREATE TABLE " + T_NAME + 
-				" (" + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + 
-				C_NAME + " TEXT," + 
-				C_LOCA + " TEXT)";	
+		// SQL query for a create this table.
+		public static final String SQL_CREATE = "CREATE TABLE " + TABLE_NAME +
+				" (" + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+				F_DEPARTMENT_NAME + " TEXT," +
+				F_DEPARTMENT_LOCATION + " TEXT)";
 	}		
 
 }
