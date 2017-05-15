@@ -16,9 +16,9 @@ public class App extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		/* Create a data base object */
+		// Create a data base object
 		mDBEmployees = new DBEmployees(getApplicationContext());
-		/* Write a log */
+		// Write a log
 		Log("Application onCreate");
 	}
 

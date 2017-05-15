@@ -17,43 +17,36 @@ public class DBEmployees extends DBSQLite {
 	// private (-Public) constant that store a version of data base
 	private static final int DB_VERSION = 2;
 
-	/** 
-	 * Constructor with one parameter that describe a link 
-	 * to the Context object.
-	 * 	@param context	The context object.
-	 * */
+
+	/** Constructor with one parameter that describe a link to the Context object */
 	public DBEmployees(Context context) {
 		//null - CursorFactory factory
 		super(context, DB_NAME, null, DB_VERSION);
 
 	}		
 	
-	/**
-	 * Called when the database is created for the first time. This is 
-	 * where the creation of tables and the initial population of the 
-	 * tables should happen.
-	 * 	@param db	The database.
-	 * */
+	/** Called when the database is created for the first time. */
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		
 		/* Create tables */
 		DBSQLite.execSQL(db, TableEmpl.SQL_CREATE);	
 		DBSQLite.execSQL(db, TableDep.SQL_CREATE);
-		
+
 		/* Fill table tDep */
-		
 		// load data from application resources
 		String[] departments = getContext().getResources().getStringArray(
 				R.array.dep_items);
-		
+
 		// create object for store couples of names and values
+//		*Класс ContentValues используется для добавления новых строк в таблицу.
+//      Каждый объект этого класса представляет собой одну строку таблицы и выглядит как
+//      ассоциативный массив с именами столбцов и значениями, которые им соответствуют.
 		ContentValues contentValues = new ContentValues(departments.length);
 				
 		// Fill table tDep 
 		for (int i = 0; i < departments.length; i++) {
 		
-			// parse information about department (tuple = кортеж = строка в таблице)
+			// parse information about department (tuple (кортеж) = строка в таблице)
 			String[] tuple = departments[i].split("-");
 			
 			// fill values
@@ -67,14 +60,7 @@ public class DBEmployees extends DBSQLite {
 		
 	}
 	
-	/** 
-	 * Called when the database needs to be upgraded. The implementation 
-	 * should use this method to drop tables, add tables, or do anything 
-	 * else it needs to upgrade to the new schema version.
-	 * @param db	The database.
-	 * @param oldVersion	The old database version.
-	 * @param newVersion	The new database version. 
-	 * */		
+	/**  Called when the database needs to be upgraded. */
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		
@@ -86,13 +72,15 @@ public class DBEmployees extends DBSQLite {
 		this.onCreate(db);
 			
 	}
-	
+
 	/**
-	 * Add information about department to a data base
-	 * @param name	department name
-	 * @param location	department location
-	 * @return id of new element
-	 * */
+	 * Add to TableDep
+	 *
+	 * @param name - name of department
+	 * @param location - location name of department
+	 * @return long	the row ID of the newly inserted row, or -1 if an error occurred
+	 */
+
 	public long addDep(String name, String location) {
 		
 		/* Create a new map of values, where column names are the keys */
@@ -106,13 +94,16 @@ public class DBEmployees extends DBSQLite {
 		return this.getWritableDatabase().insert(TableDep.TABLE_NAME, null, v);
 		
 	}
-	
+
+
 	/**
-	 * Update information about department into a data base.
-	 * @param name	new department name
-	 * @param location	new department location
-	 * @return True, if was been updated only one element
-	 * */
+	 * update row from TableDep
+	 *
+	 * @param name- new name of department
+	 * @param location- new location name of department
+	 * @param id - id
+	 * @return boolean - update 1 row (OK)
+	 */
 	public boolean updateDep(String name, String location, long id) {
 		
 		/* Create a new map of values, where column names are the keys */
@@ -126,41 +117,46 @@ public class DBEmployees extends DBSQLite {
 		return 1 == this.getWritableDatabase().update(TableDep.TABLE_NAME, v,
 				SQL_WHERE_BY_ID, new String[] {String.valueOf(id)});			
 	}
-	
-	
+
+
+
 	/**
-	 * Delete department from a data base.
-	 * @param id	of element that will be deleted
-	 * @return True, if was been deleted only one element
-	 * */
-	public boolean deleteDep(long id) {		
+	 * Delete row from TableDep
+	 *
+	 * @param id
+	 * @return boolean -delete 1 row (OK)
+	 */
+	public boolean deleteDep(long id) {
 		return 1 == this.getWritableDatabase().delete(
 				TableDep.TABLE_NAME, SQL_WHERE_BY_ID,
 				new String[] {String.valueOf(id)});			
 	}
-	
+
+
+
+
+
+
+
 	/**
 	 * Public static class that contains information about table tEmpl
-	 * */	
+	 * */
 	public static class TableEmpl implements BaseColumns {
 		
 		// Name of this table.
 		public static final String TABLE_NAME = "tEmpl";
-				
 
 	     // field name - for employee name
 		public static final String F_EMPLOYEES_NAME = "NAME";
-		
 
 	     // field name - Information about employee.
 		public static final String F_INFO = "INFO";
-		
 
 	     //field name - Department (id) that related with this employee.
 		public static final String F_DEP_ID = "DEP_ID";
 		
 		// SQL query for a create this table.
-		public static final String SQL_CREATE = "CREATE TABLE " + TABLE_NAME +
+		static final String SQL_CREATE = "CREATE TABLE " + TABLE_NAME +
 				" (" + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
 				F_EMPLOYEES_NAME + " TEXT," +
 				F_INFO + " TEXT," +
@@ -176,11 +172,9 @@ public class DBEmployees extends DBSQLite {
 		
 		// Name of table
 		public static final String TABLE_NAME = "tDep";
-		
 
 	    // field name for department name
 		public static final String F_DEPARTMENT_NAME = "NAME";
-		
 
 	    // field Department location
 		public static final String F_DEPARTMENT_LOCATION = "LOCATION";
