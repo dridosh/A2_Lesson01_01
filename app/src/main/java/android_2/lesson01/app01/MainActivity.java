@@ -20,82 +20,54 @@ public class MainActivity extends Activity {
         App.Log("MainActivity onCreate");
 
 		// Initialize UI components
-//		TextView tvText = (TextView) findViewById(R.id.tvText);
+
 		ListView lvList = (ListView) findViewById(R.id.lvList);
-//
-//		/**************************************
-//		 *              Example 1
-//		 *************************************/
-//
-//		// Create Cursor for read a data from data base
-//		Cursor cursor = App.getDB().getReadableCursor(DBEmployees.TableDep.TABLE_NAME);
-////		Cursor cr2 = App.getDB().getReadableCursorWithSelectedData(DBEmployees.TableDep.TABLE_NAME, new String[]{"NAME", "LOCATION"});
-//
-//		// Create a StringBuilder object
-//		StringBuilder sBuilder = new StringBuilder();
-//
-//		// Read a data from data base
-//		if (cursor.moveToFirst()) {
-//
-//			// Calculate indexes of columns
-//			int col_id = cursor.getColumnIndex(DBEmployees.TableDep._ID);
-//			int col_name = cursor.getColumnIndex(DBEmployees.TableDep.F_DEPARTMENT_NAME);
-//			int col_info = cursor.getColumnIndex(DBEmployees.TableDep.F_DEPARTMENT_LOCATION);
-//
-//			//Read data
-//			do {
-//
-//				sBuilder.append(cursor.getString(col_id) + " " +
-//						cursor.getString(col_name) + " - " + cursor.getString(col_info) + "\n");
-//
-//			} while (cursor.moveToNext());
-//
-//			// Show data
-//			tvText.setText(sBuilder.toString());
-//
-//		}
-//
-//		// Close a Cursor
-//		cursor.close();
-
-//		// Add new department
-//		App.getDB().addDep("Department 1", "Location 1");*/
-//
-//		// Delete department
-//		App.getDB().deleteDep(5);
-//
-
-
-
-
-        /**************************************
-         *              Example 2
-         *************************************/
+        ListView emplList = (ListView) findViewById(R.id.empl_List);
 
 
 
 
 		//Get a Cursor
-		Cursor c = App.getDB().getReadableCursor(DBEmployees.TableDep.TABLE_NAME);
+		Cursor dep_cursor = App.getDB().getReadableCursor(DBEmployees.TableDep.TABLE_NAME);
 		
 		// Create arrays of columns and UI elements
-		String[] from = {DBEmployees.TableDep.F_DEPARTMENT_NAME, DBEmployees.TableDep.F_DEPARTMENT_LOCATION};
-		int[] to = {R.id.tvName, R.id.tvLocation};
+		String[] dep_from = {DBEmployees.TableDep.F_DEPARTMENT_NAME, DBEmployees.TableDep.F_DEPARTMENT_LOCATION};
+		int[] dep_to = {R.id.tvName, R.id.tvLocation};
 
 		// Create simple Cursor adapter
-		SimpleCursorAdapter lvAdapter = new SimpleCursorAdapter(this,
-				R.layout.list_item, c, from, to, 1);
+		SimpleCursorAdapter lvDepAdapter = new SimpleCursorAdapter(this,
+				R.layout.list_item, dep_cursor, dep_from, dep_to, 1);
 
 		// setting up adapter to list view
-		lvList.setAdapter(lvAdapter);
+		lvList.setAdapter(lvDepAdapter);
 
-	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.act_main, menu);
-		return true;
-	}
+
+
+
+    //Get a Cursor
+    Cursor cursor = App.getDB().getReadableCursor(DBEmployees.TableEmpl.TABLE_NAME);
+
+    // Create arrays of columns and UI elements
+    String[] empl_from = {DBEmployees.TableEmpl.F_EMPLOYEES_NAME, DBEmployees.TableEmpl.F_INFO, DBEmployees.TableEmpl.F_DEP_ID};
+    int[] empl_to = {R.id.empl_name, R.id.empl_info,R.id.empl_dep};
+
+    // Create simple Cursor adapter
+    SimpleCursorAdapter lvEmplAdapter = new SimpleCursorAdapter(this,
+            R.layout.list_empl_item, cursor, empl_from, empl_to, 1);
+
+    // setting up adapter to list view
+		emplList.setAdapter(lvEmplAdapter);
+
+}
+
+
+//
+//	@Override
+//	public boolean onCreateOptionsMenu(Menu menu) {
+//		// Inflate the menu; this adds items to the action bar if it is present.
+//		getMenuInflater().inflate(R.menu.act_main, menu);
+//		return true;
+//	}
 
 }

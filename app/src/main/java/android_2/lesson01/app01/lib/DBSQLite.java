@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import android_2.lesson01.app01.App;
+
 public abstract class DBSQLite extends SQLiteOpenHelper {
 
    // Private fields for store a link to the Context value
@@ -90,6 +92,7 @@ public abstract class DBSQLite extends SQLiteOpenHelper {
      * @param table name that will be deleted
      */
     public static boolean dropTable(SQLiteDatabase db, String table) {
+        App.Log("***********   drop ");
         return DBSQLite.execSQL(db, "DROP TABLE IF EXISTS " + table);
     }
 

@@ -29,7 +29,9 @@ public class DBEmployees extends DBSQLite {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		/* Create tables */
-		DBSQLite.execSQL(db, TableEmpl.SQL_CREATE);	
+
+
+        DBSQLite.execSQL(db, TableEmpl.SQL_CREATE);
 		DBSQLite.execSQL(db, TableDep.SQL_CREATE);
 
 		/* Fill table tDep */
@@ -45,19 +47,44 @@ public class DBEmployees extends DBSQLite {
 				
 		// Fill table tDep 
 		for (int i = 0; i < departments.length; i++) {
-		
+
 			// parse information about department (tuple (кортеж) = строка в таблице)
 			String[] tuple = departments[i].split("-");
-			
+
 			// fill values
 			contentValues.put(TableDep.F_DEPARTMENT_NAME, tuple[0]);
 			contentValues.put(TableDep.F_DEPARTMENT_LOCATION, tuple[1]);
-			
+
 			// add record to a data base
 			db.insert(TableDep.TABLE_NAME, null, contentValues);
-			
+
 		}
-		
+
+
+		/* Fill table tEmpl */
+		// load data from application resources
+		String[] employees = getContext().getResources().getStringArray(
+				R.array.empl_items);
+
+		// create object for store couples of names and values
+		ContentValues emplContentValues = new ContentValues(employees.length);
+
+		// Fill table tEmpl
+		for (int i = 0; i < employees.length; i++) {
+
+			// parse information about department (tuple (кортеж) = строка в таблице)
+			String[] tuple = employees[i].split("-");
+
+			// fill values
+			emplContentValues.put(TableEmpl.F_EMPLOYEES_NAME, tuple[0]);
+			emplContentValues.put(TableEmpl.F_INFO, tuple[1]);
+			emplContentValues.put(TableEmpl.F_DEP_ID,tuple[2]);
+
+			// add record to a data base
+			db.insert(TableEmpl.TABLE_NAME, null, emplContentValues);
+
+		}
+
 	}
 	
 	/**  Called when the database needs to be upgraded. */
