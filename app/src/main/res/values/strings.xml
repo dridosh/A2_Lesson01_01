@@ -1,21 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">A2_L01_01</string>
+    <string name="app_name">ToDoSQLiteDB</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
 
-    <string-array name="dep_items">
-        <item>Unknow-Unknow</item>
-        <item>Business-Moscow</item>
-        <item>Development-Volgograg</item>
-        <item>Testing-Saratov</item>
+    <string-array name="priorities">
+        <item>Срочные</item>
+        <item>Напомнить</item>
     </string-array>
 
-    <string-array name="empl_items">
-        <item>Иванов И.И-передовик-3</item>
-        <item>Петров А.А.-собирает марки-1</item>
-        <item>Сидоров П.П-Хороший работник-2</item>
+    <string name="no_tasks">Нет текущих задач</string>
+    <string name="menu_insert">Добавить</string>
+    <string name="menu_delete">Удалить</string>
+    <string name="todo_summary">Кратко</string>
+    <string name="todo_description">Описание</string>
+    <string name="todo_confirm">Применить</string>
+    <string name="Add">Добавить</string>
+
+    <!--COLUMN_CATEGORY, COLUMN_SUMMARY, COLUMN_DESCRIPTION-->
+    <string-array name="todo_start">
+    <item>Срочные-Geekbrains:Выполнить домашнее задание-к 15.07.2017</item>
+    <item>Срочные-Забрать катру из сбербанка-отделение 8206 до 19:00</item>
+    <item>Срочные-Офис составить схему подключения оргтехники-15.07.2017 в 20:00</item>
+    <item>Напомнить-Позвонить в 21 отделение-Иванов Петр Семенович </item>
     </string-array>
 
 </resources>

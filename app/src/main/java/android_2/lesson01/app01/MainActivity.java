@@ -4,9 +4,10 @@ import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.view.Menu;
 import android.widget.ListView;
 
-import android_2.lesson01.app01.lib.DBEmployees;
+import android_2.lesson01.app01.lib.DBTodo;
 
 public class MainActivity extends Activity {
 
@@ -19,19 +20,18 @@ public class MainActivity extends Activity {
 
 		// Initialize UI components
 
-		ListView lvList = (ListView) findViewById(R.id.lvList);
-        ListView emplList = (ListView) findViewById(R.id.empl_List);
+		ListView lvList = (ListView) findViewById(R.id.lvTotoList);
 
 
 
 
 		//Get a Cursor
-		Cursor dep_cursor = App.getDB().getReadableCursor(DBEmployees.TableDep.TABLE_NAME);
+		Cursor dep_cursor = App.getDB().getReadableCursor(DBTodo.TableTodo.TABLE_NAME);
 		
 		// Create arrays of columns and UI elements
-		String[] dep_from = {DBEmployees.TableDep.F_DEPARTMENT_NAME,
-				DBEmployees.TableDep.F_DEPARTMENT_LOCATION};
-		int[] dep_to = {R.id.tvName, R.id.tvLocation};
+		String[] dep_from = {DBTodo.TableTodo.C_CATEGORY,
+				DBTodo.TableTodo.C_SUMMARY};
+		int[] dep_to = {R.id.tv_category, R.id.tv_summary};
 
 		// Create simple Cursor adapter
 		SimpleCursorAdapter lvDepAdapter = new SimpleCursorAdapter(this,
@@ -39,30 +39,14 @@ public class MainActivity extends Activity {
 
 		// setting up adapter to list view
 		lvList.setAdapter(lvDepAdapter);
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-//	вывод дпнных из таблице TableEmpl                                                             //
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-    //Get a Cursor
-    Cursor cursor = App.getDB().getReadableCursor(DBEmployees.TableEmpl.TABLE_NAME);
-
-    // Create arrays of columns and UI elements
-    String[] empl_from = {DBEmployees.TableEmpl.F_EMPLOYEES_NAME, DBEmployees.TableEmpl.F_INFO,
-			DBEmployees.TableEmpl.F_DEP_ID};
-    int[] empl_to = {R.id.empl_name, R.id.empl_info,R.id.empl_dep};
-
-    // Create simple Cursor adapter
-    SimpleCursorAdapter lvEmplAdapter = new SimpleCursorAdapter(this,
-            R.layout.list_empl_item, cursor, empl_from, empl_to, 1);
-
-    // setting up adapter to list view
-		emplList.setAdapter(lvEmplAdapter);
-
 }
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.act_main, menu);
+		return true;
+	}
 
 
 }
