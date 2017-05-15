@@ -1,12 +1,10 @@
 package android_2.lesson01.app01;
 
-import android.os.Bundle;
 import android.app.Activity;
 import android.database.Cursor;
+import android.os.Bundle;
 import android.support.v4.widget.SimpleCursorAdapter;
-import android.view.Menu;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import android_2.lesson01.app01.lib.DBEmployees;
 
@@ -31,7 +29,8 @@ public class MainActivity extends Activity {
 		Cursor dep_cursor = App.getDB().getReadableCursor(DBEmployees.TableDep.TABLE_NAME);
 		
 		// Create arrays of columns and UI elements
-		String[] dep_from = {DBEmployees.TableDep.F_DEPARTMENT_NAME, DBEmployees.TableDep.F_DEPARTMENT_LOCATION};
+		String[] dep_from = {DBEmployees.TableDep.F_DEPARTMENT_NAME,
+				DBEmployees.TableDep.F_DEPARTMENT_LOCATION};
 		int[] dep_to = {R.id.tvName, R.id.tvLocation};
 
 		// Create simple Cursor adapter
@@ -42,6 +41,9 @@ public class MainActivity extends Activity {
 		lvList.setAdapter(lvDepAdapter);
 
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//	вывод дпнных из таблице TableEmpl                                                             //
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -49,7 +51,8 @@ public class MainActivity extends Activity {
     Cursor cursor = App.getDB().getReadableCursor(DBEmployees.TableEmpl.TABLE_NAME);
 
     // Create arrays of columns and UI elements
-    String[] empl_from = {DBEmployees.TableEmpl.F_EMPLOYEES_NAME, DBEmployees.TableEmpl.F_INFO, DBEmployees.TableEmpl.F_DEP_ID};
+    String[] empl_from = {DBEmployees.TableEmpl.F_EMPLOYEES_NAME, DBEmployees.TableEmpl.F_INFO,
+			DBEmployees.TableEmpl.F_DEP_ID};
     int[] empl_to = {R.id.empl_name, R.id.empl_info,R.id.empl_dep};
 
     // Create simple Cursor adapter
@@ -61,13 +64,5 @@ public class MainActivity extends Activity {
 
 }
 
-
-//
-//	@Override
-//	public boolean onCreateOptionsMenu(Menu menu) {
-//		// Inflate the menu; this adds items to the action bar if it is present.
-//		getMenuInflater().inflate(R.menu.act_main, menu);
-//		return true;
-//	}
 
 }

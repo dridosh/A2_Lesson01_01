@@ -1,10 +1,11 @@
 package android_2.lesson01.app01.lib;
 
-import android_2.lesson01.app01.R;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
+
+import android_2.lesson01.app01.R;
 
 public class DBEmployees extends DBSQLite {
 	
@@ -60,6 +61,9 @@ public class DBEmployees extends DBSQLite {
 
 		}
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//	Заполнение таблицы TableEmpl                                                                  //
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		/* Fill table tEmpl */
 		// load data from application resources
@@ -99,6 +103,8 @@ public class DBEmployees extends DBSQLite {
 		this.onCreate(db);
 			
 	}
+
+
 
 	/**
 	 * Add to TableDep
@@ -146,7 +152,6 @@ public class DBEmployees extends DBSQLite {
 	}
 
 
-
 	/**
 	 * Delete row from TableDep
 	 *
@@ -159,6 +164,73 @@ public class DBEmployees extends DBSQLite {
 				new String[] {String.valueOf(id)});			
 	}
 
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//	Методы для добавления, изменения, удаления данных в  таблице TableEmpl                        //
+////////////////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * Add to TableEmpl
+	 *
+	 * @param name - name of employee
+	 * @param info - information of employee
+	 * @param dep_id - id department
+	 * @return long	the row ID of the newly inserted row, or -1 if an error occurred
+	 */
+	public long addEmpl(String name, String info, int dep_id) {
+
+		/* Create a new map of values, where column names are the keys */
+		ContentValues v = new ContentValues();
+
+		/* Fill values */
+		v.put(TableEmpl.F_EMPLOYEES_NAME, name);
+		v.put(TableEmpl.F_INFO, info);
+		v.put(TableEmpl.F_DEP_ID, dep_id);
+
+		/* Add item to a data base */
+		return this.getWritableDatabase().insert(TableEmpl.TABLE_NAME, null, v);
+
+	}
+
+
+
+
+
+	/**
+	 * update row from TableEmpl
+	 *
+	 * @param name- new name of department
+	 * @param info - information of employee
+	 * @param dep_id - id department
+	 * @param id- id of record
+	 * @return boolean - update 1 row (OK)
+	 */
+	public boolean updateEmpl(String name, String info, int dep_id, long id) {
+
+		/* Create a new map of values, where column names are the keys */
+		ContentValues v = new ContentValues();
+
+		/* Fill values */
+		v.put(TableEmpl.F_EMPLOYEES_NAME, name);
+		v.put(TableEmpl.F_INFO, info);
+		v.put(TableEmpl.F_DEP_ID, dep_id);
+
+		/* Update information */
+		return 1 == this.getWritableDatabase().update(TableEmpl.TABLE_NAME, v,
+				SQL_WHERE_BY_ID, new String[] {String.valueOf(id)});
+	}
+
+
+	/**
+	 * Delete row from TableEmpl
+	 *
+	 * @param id
+	 * @return boolean -delete 1 row (OK)
+	 */
+	public boolean deleteEmpl(long id) {
+		return 1 == this.getWritableDatabase().delete(
+				TableEmpl.TABLE_NAME, SQL_WHERE_BY_ID,
+				new String[] {String.valueOf(id)});
+	}
 
 
 
