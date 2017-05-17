@@ -1,13 +1,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="@string/action_settings"/>
+        android:id="@+id/btn_todo_add"
+        android:title="@string/menu_add"/>
+
     <item
-        android:id="@+id/insert"
-        android:title="Добавить">
-    </item>
+        android:id="@+id/btn_todo_edit"
+        android:title="@string/menu_edit"/>
+
+    <item
+        android:id="@+id/btn_todo_del"
+        android:title="@string/menu_delete"/>
 
 </menu>

@@ -18,24 +18,19 @@ public class MainActivity extends Activity {
 
         App.Log("MainActivity onCreate");
 
-		// Initialize UI components
-
-		ListView lvList = (ListView) findViewById(R.id.lvTotoList);
-
-
-
+		/* Initialize UI components */
+		ListView lvList = (ListView) findViewById(R.id.todo_list_view);
 
 		//Get a Cursor
-		Cursor dep_cursor = App.getDB().getReadableCursor(DBTodo.TableTodo.TABLE_NAME);
+		Cursor cursor = App.getDB().getReadableCursor(DBTodo.TableTodo.TABLE_NAME);
 		
 		// Create arrays of columns and UI elements
-		String[] dep_from = {DBTodo.TableTodo.C_CATEGORY,
-				DBTodo.TableTodo.C_SUMMARY};
-		int[] dep_to = {R.id.tv_category, R.id.tv_summary};
+		String[] from = {DBTodo.TableTodo.C_CATEGORY, DBTodo.TableTodo.C_SUMMARY};
+		int[] to = {R.id.tv_category, R.id.tv_summary};
 
 		// Create simple Cursor adapter
 		SimpleCursorAdapter lvDepAdapter = new SimpleCursorAdapter(this,
-				R.layout.list_item, dep_cursor, dep_from, dep_to, 1);
+				R.layout.list_item, cursor, from, to, 1);
 
 		// setting up adapter to list view
 		lvList.setAdapter(lvDepAdapter);

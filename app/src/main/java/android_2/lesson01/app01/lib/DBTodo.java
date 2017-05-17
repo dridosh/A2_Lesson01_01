@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 
+import android_2.lesson01.app01.App;
 import android_2.lesson01.app01.R;
 
 public class DBTodo extends DBSQLite {
@@ -16,7 +17,7 @@ public class DBTodo extends DBSQLite {
 	private static final String DB_NAME = "Todo.db";
 	
 	// private (-Public) constant that store a version of data base
-	private static final int DB_VERSION = 1;
+	private static final int DB_VERSION = 3;
 
 
 	/** Constructor with one parameter that describe a link to the Context object */
@@ -29,32 +30,33 @@ public class DBTodo extends DBSQLite {
 	/** Called when the database is created for the first time. */
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		/* Create tables */
+		/* Создать таблицу */
         DBSQLite.execSQL(db, TableTodo.SQL_CREATE);
 
-		/* Fill table tTodo */
+		/* Заполнить вновь созданную таблицу TableTodo.TABLE_NAME
+		*  примером из <string-array name="todo_example"> */
+
 		// load data from application resources
-		String[] example_todo = getContext().getResources().getStringArray(	R.array.todo_start);
+		String[] todo_example = getContext().getResources().getStringArray(	R.array.todo_example);
 
 		// create object for store couples of names and values
-		ContentValues contentValues = new ContentValues(example_todo.length);
+		ContentValues contentValues = new ContentValues(todo_example.length);
 
 		// Fill table TableTodo
-		for (int i = 0; i < example_todo.length; i++) {
+		for (int i = 0; i < todo_example.length; i++) {
 
 			// parse information about department (tuple (кортеж) = строка в таблице)
-			String[] tuple = example_todo[i].split("-");
+			String[] tuple = todo_example[i].split("-");
 
 			// fill values
+
 			contentValues.put(TableTodo.C_CATEGORY, tuple[0]);
 			contentValues.put(TableTodo.C_SUMMARY, tuple[1]);
 			contentValues.put(TableTodo.C_DESCRIPTION,tuple[2]);
 
 			// add record to a data base
 			db.insert(TableTodo.TABLE_NAME, null, contentValues);
-
 		}
-
 	}
 	
 	/**  Called when the database needs to be upgraded. */
@@ -62,7 +64,16 @@ public class DBTodo extends DBSQLite {
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		
 		/* Drop tables */
+		App.Log("************ onUpgrade");
 		DBSQLite.dropTable(db, TableTodo.TABLE_NAME);
+		onCreate(db);
+	}
+
+	@Override
+	public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+		App.Log("************ onDowngrade");
+		DBSQLite.dropTable(db, TableTodo.TABLE_NAME);
+		onCreate(db);
 	}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -81,7 +92,6 @@ public class DBTodo extends DBSQLite {
 		/* Create a new map of values, where column names are the keys */
 		ContentValues v = new ContentValues();
 
-		/* Fill values */
 		v.put(TableTodo.C_CATEGORY,category);
 		v.put(TableTodo.C_SUMMARY, summary);
 		v.put(TableTodo.C_DESCRIPTION, description);
@@ -105,11 +115,9 @@ public class DBTodo extends DBSQLite {
 		/* Create a new map of values, where column names are the keys */
 		ContentValues v = new ContentValues();
 
-		/* Fill values */
 		v.put(TableTodo.C_CATEGORY,category);
 		v.put(TableTodo.C_SUMMARY, summary);
 		v.put(TableTodo.C_DESCRIPTION, description);
-
 
 		/* Update information */
 		return 1 == this.getWritableDatabase().update(TableTodo.TABLE_NAME, v,
@@ -125,13 +133,13 @@ public class DBTodo extends DBSQLite {
 		// Name of this table.
 		public static final String TABLE_NAME = "tTodo";
 
-	     //
+	     // категория
 		public static final String C_CATEGORY = "COLUMN_CATEGORY";
 
-	     //
+	     // краткое описание
 		public static final String C_SUMMARY = "COLUMN_SUMMARY";
 
-	     //
+	     // подробное описание задачи
 		public static final String C_DESCRIPTION = "COLUMN_DESCRIPTION";
 		
 		// SQL query for a create this table.
