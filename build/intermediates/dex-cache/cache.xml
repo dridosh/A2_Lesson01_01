@@ -3,12 +3,12 @@
 
     <item
         is-multidex="false"
-        jar="C:\Users\dridosh\AppData\Local\Android\Sdk\extras\android\m2repository\com\android\support\support-v4\19.1.0\support-v4-19.1.0.jar"
+        jar="/Users/RDB/Library/Android/sdk/extras/android/m2repository/com/android/support/support-v4/19.1.0/support-v4-19.1.0.jar"
         jumboMode="false"
         optimize="true"
         revision="25.0.2"
         sha1="85f201b380937e61a9dce6ca90ccf6872abbfb67">
-        <dex dex="E:\And\Geekbrains\A2_Lesson01_01\app\build\intermediates\pre-dexed\debug\support-v4-19.1.0_a395bd6f7ff01c8daca23ab3f10e1957c9a989b1.jar" />
+        <dex dex="/Users/RDB/_RD/Projects/Geekbrains/A2_Lesson01_01/app/build/intermediates/pre-dexed/debug/support-v4-19.1.0_bfdf59c1a7e0b1c233d22ebece98df8557125f57.jar" />
     </item>
 
 </items>
